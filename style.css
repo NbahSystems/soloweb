@@ -1,1 +1,14 @@
+.news-carousel {
+  height: 100vh; /* Ajusta la altura según tus necesidades */
+  overflow-y: auto; /* Habilita el scroll vertical */
+}
+
+.news-item {
+  width: 100%;
+  padding: 20px;
+  border-bottom: 1px solid #ccc;
+  display: flex; /* Para organizar el contenido de cada noticia */
+  align-items: center;
+  /* Otros estilos para personalizar la apariencia de cada noticia */
+}
 

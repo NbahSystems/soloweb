@@ -1,14 +1,29 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Primera Página Web</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Animación CSS</title>
+  <style>
+    .cuadrado {
+      width: 100px;
+      height: 100px;
+      background-color: #3498db;
+      position: relative;
+      animation: mover 2s infinite alternate;
+    }
+
+    @keyframes mover {
+      0% {
+        left: 0;
+      }
+      100% {
+        left: calc(100% - 100px);
+      }
+    }
+  </style>
 </head>
 <body>
-    <h1>¡Hola, mundo!</h1>
-    <p>Este es mi primer párrafo.</p>
-    <div class="news-carousel">
-    </div>
+  <div class="cuadrado"></div>
 </body>
 </html>

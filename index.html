@@ -3,41 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Página con Scroll Infinito</title>
+  <title>100 Secciones Aleatorias</title>
   <style>
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background-image: url('https://via.placeholder.com/1920x1080'); /* Imagen de fondo */
+      font-family: 'Arial', sans-serif;
+      background-image: url('https://images.unsplash.com/photo-1497864149936-d3163f0c0f4b?ixlib=rb-1.2.1');
       background-size: cover;
       background-attachment: fixed;
       color: white;
-    }
-
-    .cuadrado {
-      width: 100px;
-      height: 100px;
-      background-color: #3498db;
-      position: relative;
-      animation: mover 2s infinite alternate;
-      margin: 20px auto;
-    }
-
-    @keyframes mover {
-      0% {
-        left: 0;
-      }
-      100% {
-        left: calc(100% - 100px);
-      }
-    }
-
-    .contenido {
-      padding: 20px;
-      text-align: center;
-      background: rgba(0, 0, 0, 0.7); /* Fondo semitransparente para el contenido */
-      margin: 20px;
-      border-radius: 10px;
     }
 
     .scroll-infinito {
@@ -52,45 +26,78 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      flex-direction: column;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(5px);
+    }
+
+    .contenido {
+      max-width: 600px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    h2 {
+      font-size: 2.5em;
+      margin-bottom: 15px;
+    }
+
+    p {
+      font-size: 1.2em;
+      line-height: 1.6;
     }
   </style>
 </head>
 <body>
-  <div class="scroll-infinito">
-    <div class="seccion">
-      <div class="cuadrado"></div>
-      <div class="contenido">
-        <h1>Bienvenido a la Página</h1>
-        <p>Esta es la primera sección con scroll infinito.</p>
-      </div>
-    </div>
-    <div class="seccion">
-      <div class="contenido">
-        <h2>Segunda Sección</h2>
-        <p>Más contenido interesante aquí.</p>
-      </div>
-    </div>
-    <div class="seccion">
-      <div class="contenido">
-        <h2>Tercera Sección</h2>
-        <p>¡Sigue desplazándote para ver más!</p>
-      </div>
-    </div>
-    <!-- Puedes añadir más secciones según sea necesario -->
-  </div>
+  <div class="scroll-infinito" id="scrollContainer"></div>
 
   <script>
-    // Script para simular scroll infinito
-    const scrollInfinito = document.querySelector('.scroll-infinito');
-    let secciones = document.querySelectorAll('.seccion');
+    // Arrays para generar contenido aleatorio
+    const emojis = ['🚀', '🌟', '🎯', '💡', '🌈', '🔥', '🎉', '📚', '🌍', '✨'];
+    const textos = [
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      "Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
+      "Duis aute irure dolor in reprehenderit in voluptate velit.",
+      "Excepteur sint occaecat cupidatat non proident."
+    ];
 
-    scrollInfinito.addEventListener('scroll', () => {
-      if (scrollInfinito.scrollTop + scrollInfinito.clientHeight >= scrollInfinito.scrollHeight) {
-        // Clona la primera sección y la añade al final para simular scroll infinito
-        const clon = secciones[0].cloneNode(true);
-        scrollInfinito.appendChild(clon);
-        secciones = document.querySelectorAll('.seccion'); // Actualiza la lista de secciones
+    // Función para generar texto aleatorio
+    function generarTextoAleatorio(palabras) {
+      return textos.sort(() => Math.random() - 0.5).slice(0, palabras).join(' ');
+    }
+
+    // Función para crear una sección
+    function crearSeccion(id) {
+      const seccion = document.createElement('div');
+      seccion.className = 'seccion';
+      
+      const titulo = `${emojis[Math.floor(Math.random() * emojis.length)]} Sección ${id}`;
+      const contenidoTexto = generarTextoAleatorio(3) + ' ' + generarTextoAleatorio(2);
+
+      seccion.innerHTML = `
+        <div class="contenido">
+          <h2>${titulo}</h2>
+          <p>${contenidoTexto}</p>
+        </div>
+      `;
+
+      return seccion;
+    }
+
+    // Generar 100 secciones iniciales
+    const scrollContainer = document.getElementById('scrollContainer');
+    for (let i = 1; i <= 100; i++) {
+      scrollContainer.appendChild(crearSeccion(i));
+    }
+
+    // Scroll infinito
+    let contadorSecciones = 100;
+    scrollContainer.addEventListener('scroll', () => {
+      const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
+      
+      if (scrollTop + clientHeight >= scrollHeight - 10) {
+        contadorSecciones++;
+        scrollContainer.appendChild(crearSeccion(contadorSecciones));
       }
     });
   </script>

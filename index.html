@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>soloweb</title>
+  <title>50 Frases Motivadoras Infinitas</title>
   <style>
     body {
       margin: 0;
@@ -26,7 +26,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      background: rgba(0, 0, 0, 0.6);
+      background: rgba(0, 0, 0, 0.7);
       backdrop-filter: blur(5px);
     }
 
@@ -37,13 +37,15 @@
     }
 
     h2 {
-      font-size: 2.5em;
-      margin-bottom: 15px;
+      font-size: 2.2em;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     }
 
     p {
-      font-size: 1.2em;
+      font-size: 1.1em;
       line-height: 1.6;
+      opacity: 0.9;
     }
   </style>
 </head>
@@ -51,53 +53,103 @@
   <div class="scroll-infinito" id="scrollContainer"></div>
 
   <script>
-    // Arrays para generar contenido aleatorio
-    const emojis = ['🚀', '🌟', '🎯', '💡', '🌈', '🔥', '🎉', '📚', '🌍', '✨'];
-    const textos = [
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      "Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
-      "Duis aute irure dolor in reprehenderit in voluptate velit.",
-      "Excepteur sint occaecat cupidatat non proident."
+    // Base de datos de 50 frases motivadoras con sus explicaciones
+    const motivaciones = [
+      { frase: "🎯 El éxito es la suma de pequeños esfuerzos repetidos día tras día", explicacion: "La consistencia es clave. Pequeñas acciones diarias construyen grandes resultados." },
+      { frase: "🚀 No esperes el momento perfecto, toma el momento y hazlo perfecto", explicacion: "La perfección es una ilusión. Actúa ahora con lo que tienes." },
+      { frase: "🌱 Los obstáculos son esas cosas espantosas que ves cuando apartas los ojos de tu meta", explicacion: "Mantén tu enfoque en el objetivo final y los desafíos parecerán más pequeños." },
+      { frase: "🧠 El único límite para nuestros logros es el que ponemos en nuestras mentes", explicacion: "Tu mentalidad determina tu potencial. Cree en ti mismo." },
+      { frase: "🔥 Si puedes soñarlo, puedes hacerlo", explicacion: "La imaginación es el primer paso para crear realidades." },
+      { frase: "⏳ La disciplina es el puente entre las metas y los logros", explicacion: "La motivación fluctúa, pero la disciplina te mantiene en marcha." },
+      { frase: "🌈 Tu velocidad no importa. Adelante es adelante", explicacion: "El progreso no tiene una medida única. Celebra cada paso." },
+      { frase: "💪 El fuego de la pasión derrite el miedo al fracaso", explicacion: "Cuando amas lo que haces, los obstáculos se convierten en desafíos emocionantes." },
+      { frase: "🌞 Después de la tormenta siempre sale el sol", explicacion: "Ninguna dificultad es permanente. Mantén la esperanza." },
+      { frase: "🏋️ La fuerza no viene de la capacidad física, sino de la voluntad indomable", explicacion: "Tu mente es tu herramienta más poderosa." },
+      { frase: "🌿 Los días difíciles son los que hacen crecer", explicacion: "El crecimiento ocurre fuera de tu zona de confort." },
+      { frase: "🌟 Hoy es un buen día para tener un buen día", explicacion: "Tu actitud determina tu realidad. Elige comenzar con energía." },
+      { frase: "💎 Eres más fuerte de lo que crees y más capaz de lo que imaginas", explicacion: "El potencial humano es ilimitado. Confía en ti." },
+      { frase: "🌱 El crecimiento duele, pero el estancamiento mata", explicacion: "El cambio requiere esfuerzo, pero es necesario para evolucionar." },
+      { frase: "🧠 Tu mente es un jardín, tus pensamientos son las semillas", explicacion: "Alimenta pensamientos positivos y constructivos." },
+      { frase: "🎯 El éxito no es final, el fracaso no es fatal: lo que cuenta es el valor para continuar", explicacion: "La perseverancia es la clave del éxito a largo plazo." },
+      { frase: "⏳ No cuentes los días, haz que los días cuenten", explicacion: "Vive con propósito y aprovecha cada momento." },
+      { frase: "🚀 El miedo es solo una ilusión. La acción lo disipa", explicacion: "Actúa a pesar del miedo y descubrirás que no era tan grande como parecía." },
+      { frase: "🌍 La mejor manera de predecir el futuro es crearlo", explicacion: "Toma el control de tu vida y construye el futuro que deseas." },
+      { frase: "🔥 Cada logro comienza con la decisión de intentarlo", explicacion: "El primer paso es siempre el más importante." },
+      { frase: "💡 No te rindas. Comenzar es siempre lo más difícil", explicacion: "La perseverancia supera cualquier obstáculo." },
+      { frase: "🌈 El fracaso es simplemente la oportunidad de comenzar de nuevo, esta vez de manera más inteligente", explicacion: "Aprende de tus errores y sigue adelante." },
+      { frase: "🌞 La vida es 10% lo que te ocurre y 90% cómo reaccionas a ello", explicacion: "Tu actitud determina tu experiencia." },
+      { frase: "⏳ No importa lo lento que vayas, siempre y cuando no te detengas", explicacion: "El progreso constante es más importante que la velocidad." },
+      { frase: "💪 El éxito no es para los que nunca fallan, sino para los que nunca se rinden", explicacion: "La resiliencia es la clave del éxito." },
+      { frase: "🔥 La mejor venganza es un éxito masivo", explicacion: "Usa las críticas y los obstáculos como combustible para alcanzar tus metas." },
+      { frase: "🌍 El tiempo es limitado, no lo malgastes viviendo la vida de alguien más", explicacion: "Sé auténtico y vive según tus propios valores." },
+      { frase: "💡 La única manera de hacer un gran trabajo es amar lo que haces", explicacion: "La pasión es el motor del éxito." },
+      { frase: "🌟 No te compares con los demás. Compárate con quien eras ayer", explicacion: "El crecimiento personal es la única competencia que importa." },
+      { frase: "🌈 El éxito no es la clave de la felicidad. La felicidad es la clave del éxito", explicacion: "Si amas lo que haces, el éxito llegará naturalmente." },
+      { frase: "🌞 La vida es corta. Despiértala con pasión", explicacion: "Vive con entusiasmo y propósito." },
+      { frase: "🔥 No dejes que el miedo a perder sea mayor que la emoción de ganar", explicacion: "Toma riesgos calculados y persigue tus sueños." },
+      { frase: "💎 La mejor inversión que puedes hacer es en ti mismo", explicacion: "Invierte en tu educación, salud y crecimiento personal." },
+      { frase: "🚀 El éxito no es para los que esperan, sino para los que actúan", explicacion: "La acción es la clave para alcanzar tus metas." },
+      { frase: "⏳ La paciencia es amarga, pero su fruto es dulce", explicacion: "El éxito toma tiempo. Sé paciente y persistente." },
+      { frase: "🌱 No busques ser perfecto, busca ser mejor", explicacion: "El progreso es más importante que la perfección." },
+      { frase: "🌈 La vida es como montar en bicicleta. Para mantener el equilibrio, debes seguir moviéndote", explicacion: "El movimiento constante te lleva hacia adelante." },
+      { frase: "🔥 El éxito es la mejor respuesta a las críticas", explicacion: "Usa las críticas como motivación para mejorar." },
+      { frase: "💡 La única manera de alcanzar lo imposible es creer que es posible", explicacion: "La fe en ti mismo es el primer paso hacia lo extraordinario." },
+      { frase: "🌟 No te rindas. Las cosas buenas toman tiempo", explicacion: "La perseverancia siempre tiene su recompensa." },
+      { frase: "🌍 El éxito no es cuestión de suerte, es cuestión de elección", explicacion: "Toma decisiones conscientes para construir el éxito." },
+      { frase: "🌈 La vida es un eco. Lo que das, recibes", explicacion: "Sé amable, generoso y positivo, y recibirás lo mismo." },
+      { frase: "🔥 El éxito no es para los que tienen suerte, sino para los que trabajan duro", explicacion: "El esfuerzo constante es la clave del éxito." },
+      { frase: "💪 La mejor manera de superar el miedo es enfrentarlo", explicacion: "La acción disipa el miedo y te hace más fuerte." },
+      { frase: "🌞 El éxito no es un destino, es un viaje", explicacion: "Disfruta el proceso y aprende en el camino." },
+      { frase: "🌟 No importa cuántas veces caigas, lo importante es cuántas veces te levantas", explicacion: "La resiliencia es la clave del éxito." },
+      { frase: "🌈 La vida es corta. Haz que cada momento cuente", explicacion: "Vive con propósito y pasión." },
+      { frase: "🔥 El éxito no es para los que esperan, sino para los que actúan", explicacion: "La acción es la clave para alcanzar tus metas." },
+      { frase: "💡 La mejor manera de predecir el futuro es crearlo", explicacion: "Toma el control de tu vida y construye el futuro que deseas." },
+      { frase: "🌟 El éxito no es final, el fracaso no es fatal: lo que cuenta es el valor para continuar", explicacion: "La perseverancia es la clave del éxito a largo plazo." }
     ];
 
-    // Función para generar texto aleatorio
-    function generarTextoAleatorio(palabras) {
-      return textos.sort(() => Math.random() - 0.5).slice(0, palabras).join(' ');
+    // Función para mezclar array aleatoriamente
+    function mezclarArray(array) {
+      return array.sort(() => Math.random() - 0.5);
     }
 
+    // Mezclamos las motivaciones al cargar la página
+    const motivacionesMezcladas = mezclarArray(motivaciones);
+
     // Función para crear una sección
-    function crearSeccion(id) {
+    function crearSeccion() {
       const seccion = document.createElement('div');
       seccion.className = 'seccion';
+      // Tomamos la última motivación del array mezclado
+      const { frase, explicacion } = motivacionesMezcladas.pop();
       
-      const titulo = `${emojis[Math.floor(Math.random() * emojis.length)]} Sección ${id}`;
-      const contenidoTexto = generarTextoAleatorio(3) + ' ' + generarTextoAleatorio(2);
-
       seccion.innerHTML = `
         <div class="contenido">
-          <h2>${titulo}</h2>
-          <p>${contenidoTexto}</p>
+          <h2>${frase}</h2>
+          <p>${explicacion}</p>
         </div>
       `;
 
       return seccion;
     }
 
-    // Generar 100 secciones iniciales
+    // Generar 10 secciones iniciales
     const scrollContainer = document.getElementById('scrollContainer');
-    for (let i = 1; i <= 100; i++) {
-      scrollContainer.appendChild(crearSeccion(i));
+    for (let i = 0; i < 10; i++) {
+      scrollContainer.appendChild(crearSeccion());
     }
 
     // Scroll infinito
-    let contadorSecciones = 100;
     scrollContainer.addEventListener('scroll', () => {
       const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
       
-      if (scrollTop + clientHeight >= scrollHeight - 10) {
-        contadorSecciones++;
-        scrollContainer.appendChild(crearSeccion(contadorSecciones));
+      if (scrollTop + clientHeight >= scrollHeight - 100) {
+        if (motivacionesMezcladas.length > 0) {
+          scrollContainer.appendChild(crearSeccion());
+        } else {
+          // Si se acaban las frases, reciclamos el array
+          mezclarArray(motivaciones);
+          motivacionesMezcladas.push(...motivaciones);
+        }
       }
     });
   </script>

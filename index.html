@@ -3,14 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Animación CSS</title>
+  <title>Página con Scroll Infinito</title>
   <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-image: url('https://via.placeholder.com/1920x1080'); /* Imagen de fondo */
+      background-size: cover;
+      background-attachment: fixed;
+      color: white;
+    }
+
     .cuadrado {
       width: 100px;
       height: 100px;
       background-color: #3498db;
       position: relative;
       animation: mover 2s infinite alternate;
+      margin: 20px auto;
     }
 
     @keyframes mover {
@@ -21,9 +31,68 @@
         left: calc(100% - 100px);
       }
     }
+
+    .contenido {
+      padding: 20px;
+      text-align: center;
+      background: rgba(0, 0, 0, 0.7); /* Fondo semitransparente para el contenido */
+      margin: 20px;
+      border-radius: 10px;
+    }
+
+    .scroll-infinito {
+      height: 100vh;
+      overflow-y: scroll;
+      scroll-snap-type: y mandatory;
+    }
+
+    .seccion {
+      height: 100vh;
+      scroll-snap-align: start;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
   </style>
 </head>
 <body>
-  <div class="cuadrado"></div>
+  <div class="scroll-infinito">
+    <div class="seccion">
+      <div class="cuadrado"></div>
+      <div class="contenido">
+        <h1>Bienvenido a la Página</h1>
+        <p>Esta es la primera sección con scroll infinito.</p>
+      </div>
+    </div>
+    <div class="seccion">
+      <div class="contenido">
+        <h2>Segunda Sección</h2>
+        <p>Más contenido interesante aquí.</p>
+      </div>
+    </div>
+    <div class="seccion">
+      <div class="contenido">
+        <h2>Tercera Sección</h2>
+        <p>¡Sigue desplazándote para ver más!</p>
+      </div>
+    </div>
+    <!-- Puedes añadir más secciones según sea necesario -->
+  </div>
+
+  <script>
+    // Script para simular scroll infinito
+    const scrollInfinito = document.querySelector('.scroll-infinito');
+    let secciones = document.querySelectorAll('.seccion');
+
+    scrollInfinito.addEventListener('scroll', () => {
+      if (scrollInfinito.scrollTop + scrollInfinito.clientHeight >= scrollInfinito.scrollHeight) {
+        // Clona la primera sección y la añade al final para simular scroll infinito
+        const clon = secciones[0].cloneNode(true);
+        scrollInfinito.appendChild(clon);
+        secciones = document.querySelectorAll('.seccion'); // Actualiza la lista de secciones
+      }
+    });
+  </script>
 </body>
 </html>

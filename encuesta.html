@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encuesta Veterinarios Gratis</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f0f8ff;
+        }
+
+        .encuesta-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+
+        .pregunta {
+            margin-bottom: 25px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            display: block;
+            margin: 20px auto;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .resultado {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e8f5e9;
+            border-radius: 5px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="encuesta-container">
+        <h1>¿Deberían ser gratuitos los servicios veterinarios?</h1>
+        
+        <form id="encuestaForm">
+            <div class="pregunta">
+                <h3>1. ¿Crees que los servicios veterinarios básicos deberían ser gratuitos?</h3>
+                <label>
+                    <input type="radio" name="pregunta1" value="si" required> Sí
+                </label>
+                <label>
+                    <input type="radio" name="pregunta1" value="no"> No
+                </label>
+            </div>
+
+            <div class="pregunta">
+                <h3>2. ¿Qué razones apoyan tu opinión? (Marca todas las que correspondan)</h3>
+                <label>
+                    <input type="checkbox" name="razones" value="salud"> Salud animal es prioridad
+                </label>
+                <label>
+                    <input type="checkbox" name="razones" value="economia"> Dificultades económicas de dueños
+                </label>
+                <label>
+                    <input type="checkbox" name="razones" value="bienestar"> Bienestar social
+                </label>
+                <label>
+                    <input type="checkbox" name="razones" value="sostenibilidad"> No sería sostenible
+                </label>
+            </div>
+
+            <div class="pregunta">
+                <h3>3. ¿Con qué frecuencia visitas al veterinario?</h3>
+                <select name="frecuencia" required>
+                    <option value="">Selecciona una opción</option>
+                    <option value="mensual">Mensualmente</option>
+                    <option value="trimestral">Cada 3 meses</option>
+                    <option value="anual">Anualmente</option>
+                    <option value="emergencia">Solo en emergencias</option>
+                </select>
+            </div>
+
+            <div class="pregunta">
+                <h3>4. ¿Qué opinas sobre el costo actual de los servicios veterinarios?</h3>
+                <textarea name="opinion" rows="4" placeholder="Escribe tu opinión aquí..."></textarea>
+            </div>
+
+            <button type="submit">Enviar Encuesta</button>
+        </form>
+
+        <div class="resultado" id="resultado">
+            <h3>¡Gracias por participar!</h3>
+            <p>Tus respuestas han sido registradas.</p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('encuestaForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Mostrar resultado
+            document.getElementById('resultado').style.display = 'block';
+            
+            // Opcional: Aquí puedes agregar código para enviar los datos a un servidor
+            // Ejemplo: fetch('url', { method: 'POST', body: new FormData(this) })
+            
+            // Resetear formulario después de 3 segundos
+            setTimeout(() => {
+                this.reset();
+                document.getElementById('resultado').style.display = 'none';
+            }, 3000);
+        });
+    </script>
+</body>
+  </html>

@@ -80,6 +80,103 @@
     </style>
 </head>
 <body>
+    <h1>Generador de Nombres para Bots de Trading</h1>
+
+<div>
+  <input id="traitsInput" placeholder="Características del bot (ej: rápido, cuántico, inteligente)">
+  <button id="generateBtn" onclick="generateNames()">Generar Nombres</button>
+</div>
+
+<ul id="namesList"></ul>
+
+<script>
+  const botPrefixes = ["Algo", "Quant", "Cyber", "Neuro", "Hyper", "Quantum", "Turbo", "Mega"];
+  const tradingTerms = ["Trader", "Scalper", "Arbitraje", "Mercado", "Orden", "Señal", "Tendencia"];
+  const futuristicSuffixes = ["3000", "X", "AI", "Pro", "Ultra", "Omega", "Prime", "Elite"];
+
+  async function generateNames() {
+    generateBtn.disabled = true;
+    generateBtn.textContent = "⏳ Generando...";
+    namesList.innerHTML = "";
+
+    let traits = traitsInput.value.split(',').map(t => t.trim());
+    let names = await generateText(`Genera 5 nombres únicos para bots de trading en español, incorporando algunas de estas características: ${traits.join(', ')}. Hazlos sonar futuristas y poderosos.`);
+    
+    let nameArray = names.split('\n');
+    for (let name of nameArray) {
+      let li = document.createElement('li');
+      li.style.cssText = 'display: flex; flex-direction: column; align-items: flex-start; margin-bottom: 30px; padding: 15px; border: 1px solid #ddd; border-radius: 8px;';
+
+      let logo = generateLogo(name);
+      let imagePromise = generateImage(`A futuristic trading bot named ${name}, digital art style`);
+      let descriptionPromise = generateText(`Describe un bot de trading llamado ${name} en 2-3 oraciones. Menciona sus capacidades únicas y cómo podría beneficiar a los traders.`);
+      
+      li.innerHTML = `
+        <div style="display: flex; align-items: center; margin-bottom: 10px;">
+          ${logo}
+          <span style="margin-left: 10px; margin-right: 10px; font-weight: bold; font-size: 1.2em;">${name}</span>
+          <img src="https://placehold.co/100x100" alt="${name}" style="width:100px; height:100px;">
+          <button onclick="shareBot('${name}')" style="margin-left: 10px;">Compartir</button>
+        </div>
+        <p style="margin-top: 10px; font-style: italic;">Generando descripción...</p>
+      `;
+      namesList.appendChild(li);
+      
+      // Replace placeholder with generated image when ready
+      imagePromise.then(dataUrl => {
+        li.querySelector('img').src = dataUrl;
+      });
+
+      // Add description when ready
+      descriptionPromise.then(description => {
+        li.querySelector('p').textContent = description;
+        li.querySelector('p').style.fontStyle = 'normal';
+      });
+    }
+
+    generateBtn.disabled = false;
+    generateBtn.textContent = "Generar Nombres";
+  }
+
+  function generateLogo(name) {
+    let color = getColorFromName(name);
+    return `
+      <svg width="40" height="40" viewBox="0 0 40 40">7
+        <rect width="40" height="40" fill="${color}" />
+        <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="white" font-size="20">
+          ${name[0]}
+        </text>
+      </svg>
+    `;
+  }
+
+  function getColorFromName(name) {
+    let hash = 0;
+    for (let i = 0; i < name.length; i++) {
+      hash = name.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    let color = '#';
+    for (let i = 0; i < 3; i++) {
+      let value = (hash >> (i * 8)) & 0xFF;
+      color += ('00' + value.toString(16)).substr(-2);
+    }
+    return color;
+  }
+
+  async function shareBot(name) {
+    const url = `${window.location.origin}${window.location.pathname}?bot=${encodeURIComponent(name)}`;
+    try {
+      await navigator.clipboard.writeText(url);
+      alert(`Enlace para ${name} copiado al portapapeles!`);
+    } catch (err) {
+      console.error('Error al copiar el enlace:', err);
+      alert('No se pudo copiar el enlace. Por favor, inténtalo de nuevo.');
+    }
+  }
+
+  // Generación inicial
+  generateNames();
+</script>
     <div class="container">
         <h1>Lista de Tareas</h1>
         <input type="text" id="taskInput" placeholder="Ingresa una tarea">

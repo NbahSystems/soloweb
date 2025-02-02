@@ -1,0 +1,112 @@
+<div style="max-width: 800px; margin: 0 auto; font-family: Arial, sans-serif; padding: 20px;">
+  <h1 id="titleEl" style="color: #4a4a4a; text-align: center; font-size: 3em; margin-bottom: 30px; text-shadow: 2px 2px 4px rgba(0,0,0,0.1);"></h1>
+  
+  <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+    <img id="dessertImg" src="https://placehold.co/400x300" alt="Dessert Image" style="width: 48%; max-width: 400px; height: auto; border-radius: 10px;">
+    <img id="ingredientsImg" src="https://placehold.co/400x300" alt="Ingredients Image" style="width: 48%; max-width: 400px; height: auto; border-radius: 10px;">
+  </div>
+  
+  <div id="ingredientSection">
+    <h2 style="color: #6a5acd;"></h2>
+    <ul id="ingredientsList" style="color: #4a4a4a;"></ul>
+  </div>
+  
+  <div id="preparationSection">
+    <h2 style="color: #6a5acd;"></h2>
+    <ol id="preparationList" style="color: #4a4a4a;"></ol>
+  </div>
+  
+  <div id="stepDetailCtn" style="margin-top: 20px; padding: 15px; background-color: #f0f0f0; border-radius: 5px; display: none;"></div>
+
+  <button id="generateBtn" onclick="generateNewDessert()" style="background-color: #6a5acd; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-top: 20px; display: block; width: 100%;"></button>
+
+  <button id="downloadPdfBtn" onclick="downloadPdf()" style="background-color: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-top: 10px; display: block; width: 100%;"></button>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+  let currentStep = 0;
+  let steps = [];
+
+  async function generateNewDessert() {
+    generateBtn.disabled = true;
+    generateBtn.textContent = "⏳ Generando...";
+
+    // Generate dessert name and recipe
+    let dessertRecipe = await generateText("Generate a pastry recipe in Spanish. Include a creative name, ingredients list, and preparation steps.");
+    let recipeLines = dessertRecipe.split('\n');
+
+    // Update title
+    titleEl.textContent = recipeLines[0];
+    titleEl.style.animation = "fadeIn 1s";
+
+    // Update ingredients
+    let ingredients = recipeLines.slice(recipeLines.indexOf("Ingredientes:") + 1, recipeLines.indexOf("Preparación:"));
+    ingredientsList.innerHTML = ingredients.map(ing => `<li>${ing}</li>`).join('');
+
+    // Update preparation steps
+    steps = recipeLines.slice(recipeLines.indexOf("Preparación:") + 1);
+    preparationList.innerHTML = steps.map(step => `<li>${step}</li>`).join('');
+
+    // Generate images
+    let dessertImagePromise = generateImage(`A delicious ${recipeLines[0]} dessert, styled food photography`);
+    let ingredientsImagePromise = generateImage(`Main ingredients for ${recipeLines[0]}: ${ingredients.slice(0, 3).join(', ')}`);
+    
+    // Update images when they're ready
+    dessertImagePromise.then(dataUrl => dessertImg.src = dataUrl);
+    ingredientsImagePromise.then(dataUrl => ingredientsImg.src = dataUrl);
+
+    generateBtn.disabled = false;
+    generateBtn.textContent = "Generar Nuevo Postre";
+    
+    // Reset step counter
+    currentStep = 0;
+    stepDetailCtn.style.display = "none";
+  }
+
+  function downloadPdf() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    
+    // Add title
+    doc.setFontSize(20);
+    doc.text(titleEl.textContent, 10, 20);
+    
+    // Add ingredients
+    doc.setFontSize(16);
+    doc.text('Ingredientes:', 10, 30);
+    doc.setFontSize(12);
+    let yPos = 40;
+    ingredientsList.querySelectorAll('li').forEach(li => {
+      doc.text('• ' + li.textContent, 15, yPos);
+      yPos += 7;
+    });
+    
+    // Add preparation steps
+    doc.setFontSize(16);
+    doc.text('Preparación:', 10, yPos + 10);
+    doc.setFontSize(12);
+    yPos += 20;
+    preparationList.querySelectorAll('li').forEach((li, index) => {
+      doc.text(`${index + 1}. ${li.textContent}`, 15, yPos);
+      yPos += 7;
+      if (yPos > 280) {
+        doc.addPage();
+        yPos = 20;
+      }
+    });
+    
+    // Save the PDF
+    doc.save('receta_postre.pdf');
+  }
+
+  // Generate initial dessert on page load
+  generateNewDessert();
+</script>
+
+<style>
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+</style>

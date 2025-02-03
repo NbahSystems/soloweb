@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>EOS Slots</title>
+    <style>
+        .slot-machine {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            padding: 20px;
+        }
+        .reel {
+            width: 100px;
+            height: 100px;
+            border: 2px solid #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="slot-machine">
+        <div class="reel" id="reel1">?</div>
+        <div class="reel" id="reel2">?</div>
+        <div class="reel" id="reel3">?</div>
+    </div>
+    
+    <input type="number" id="betAmount" step="0.0001" min="0.0001" value="0.1000">
+    <button onclick="spin()">Jugar!</button>
+    <div id="result"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/eosjs@21.0.7/lib/eos.min.js"></script>
+    <script>
+        const contractName = "tuslotscontra";
+        const network = {
+            protocol: "https",
+            host: "jungle3.eosio.cr",
+            port: 443,
+            chainId: "2a02a0053e5a8cf73a56ba0fda11e4d92e0238a4a2aa74fccf46d5a910746840"
+        };
+
+        const rpc = new eosjs.JsonRpc(network);
+        const api = new eosjs.Api({
+            rpc,
+            signatureProvider: new eosjs.JsSignatureProvider([])
+        });
+
+        async function spin() {
+            const betAmount = document.getElementById('betAmount').value;
+            
+            try {
+                const result = await api.transact({
+                    actions: [{
+                        account: contractName,
+                        name: "bet",
+                        authorization: [{
+                            actor: "TUWALLET",
+                            permission: "active"
+                        }],
+                        data: {
+                            player: "TUWALLET",
+                            quantity: `${betAmount} EOS`
+                        }
+                    }]
+                }, {
+                    blocksBehind: 3,
+                    expireSeconds: 30
+                });
+
+                // Actualizar UI con resultado
+                const decoded = await rpc.history_get_transaction(result.transaction_id);
+                // Procesar resultado...
+                
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        // Animación de los rodillos
+        function animateReels() {
+            // Lógica de animación...
+        }
+    </script>
+</body>
+  </html>

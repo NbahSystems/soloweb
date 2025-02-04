@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Postres</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f8f8;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        #titleEl {
+            color: #4a4a4a;
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            animation: fadeIn 1s; /* Apply the fade-in animation */
+        }
+
+        .image-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+
+        .image-container img {
+            width: 48%;
+            max-width: 400px;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        #ingredientSection {
+            margin-bottom: 20px;
+        }
+
+        #ingredientSection h2 {
+            color: #6a5acd;
+            margin-bottom: 10px;
+        }
+
+        #ingredientsList {
+            color: #4a4a4a;
+            list-style-type: disc;
+            padding-left: 20px;
+        }
+
+        #stepDetailCtn {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            display: none; /* Initially hidden */
+        }
+
+        #generateBtn {
+            background-color: #6a5acd;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            display: block;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+
+        #generateBtn:hover {
+            background-color: #5767c3;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 600px) {
+            .image-container img {
+                width: 95%;
+                max-width: 100%;
+            }
+            #titleEl {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1 id="titleEl"></h1>
+
+    <div class="image-container">
+        <img id="dessertImg" src="https://placehold.co/400x300" alt="Dessert Image">
+        <img id="ingredientsImg" src="https://placehold.co/400x300" alt="Ingredients Image">
+    </div>
+
+    <div id="ingredientSection">
+        <h2>Ingredientes:</h2>
+        <ul id="ingredientsList"></ul>
+    </div>
+
+    <div id="stepDetailCtn"></div>
+
+    <button id="generateBtn" onclick="generateNewDessert()">Generar Nuevo Postre</button>
+</div>
+
+<script>
+    async function generateText(prompt) {
+        // Placeholder for your text generation logic (Perchance, API, etc.)
+        // Example using a simple array (replace with your actual logic):
+        const recipes = [
+            "Tarta de Manzana\nIngredientes:\nManzanas, Harina, Azúcar, Huevos\nPreparación:\nMezclar...",
+            "Bizcocho de Chocolate\nIngredientes:\nChocolate, Harina, Azúcar, Mantequilla\nPreparación:\nDerretir...",
+            // ... more recipes
+        ];
+        return recipes[Math.floor(Math.random() * recipes.length)]; // Random recipe
+    }
+
+    async function generateImage(prompt) {
+        // Placeholder for your image generation logic (API, etc.)
+        return "https://placehold.co/400x300"; // Placeholder image URL
+    }
+
+    async function generateNewDessert() {
+        generateBtn.disabled = true;
+        generateBtn.textContent = "⏳ Generando...";
+
+        let dessertRecipe = await generateText("Generate a pastry recipe in Spanish. Include a creative name and ingredients list.");
+        let recipeLines = dessertRecipe.split('\n');
+
+        titleEl.textContent = recipeLines[0];
+
+        let ingredientsStart = recipeLines.findIndex(line => line.trim().toLowerCase().startsWith("ingredientes:"));
+        let preparationStart = recipeLines.findIndex(line => line.trim().toLowerCase().startsWith("preparación:"));
+
+        if (ingredientsStart !== -1 && preparationStart !== -1) {
+            let ingredients = recipeLines.slice(ingredientsStart + 1, preparationStart);
+            ingredientsList.innerHTML = ingredients.map(ing => `<li>${ing.trim()}</li>`).join('');
+
+            // ... (Code to handle preparation steps)
+        } else {
+          console.error("Recipe format not recognized.  Check your generateText function and Perchance output.");
+          ingredientsList.innerHTML = "<li>Error: Receta no válida.</li>";
+        }
+
+
+        let dessertImagePromise = generateImage(`A delicious ${recipeLines[0]} dessert, styled food photography`);
+        let ingredientsImagePromise = generateImage(`Main ingredients for ${recipeLines[0]}: ${ingredients.slice(0, 3).join(', ')}`);
+
+        dessertImagePromise.then(dataUrl => dessertImg.src = dataUrl);
+        ingredientsImagePromise.then(dataUrl => ingredientsImg.src = dataUrl);
+
+        generateBtn.disabled = false;
+        generateBtn.textContent = "Generar Nuevo Postre";
+    }
+
+    generateNewDessert();
+</script>
+
+</body>
+</html>

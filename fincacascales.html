@@ -5,65 +5,89 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FINCA CASCALES - Aceite de Oliva Virgen Extra Ecológico</title>
     <style>
-        /* Estilos CSS aquí */
+        /* Estilos CSS */
         body {
-            font-family: sans-serif;
+            font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
         }
         nav {
-            background-color: #f0f0f0;
-            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         nav ul {
             list-style: none;
             margin: 0;
             padding: 0;
-            text-align: center; /* Centrar el menú */
         }
         nav li {
             display: inline;
-            margin: 0 10px;
+            margin: 0 15px;
         }
         nav a {
             text-decoration: none;
-            color: #333;
+            color: white;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+        nav a:hover {
+            color: #f0f0f0;
         }
         section {
-            padding: 20px;
+            padding: 50px 20px;
         }
         img {
             max-width: 100%;
             height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         .cta-button {
             display: inline-block;
-            background-color: #007bff;
+            background-color: #4CAF50;
             color: white;
-            padding: 10px 20px;
+            padding: 12px 24px;
             text-decoration: none;
             border-radius: 5px;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
         }
-        /* Estilos adicionales para mejorar la presentación */
+        .cta-button:hover {
+            background-color: #45a049;
+        }
         .container {
-            max-width: 960px;
+            max-width: 1200px;
             margin: 0 auto;
+            padding: 0 15px;
         }
         .section-title {
             text-align: center;
-            margin-bottom: 20px;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            color: #333;
         }
         .product-image {
             float: left;
             margin-right: 20px;
+            width: 250px;
         }
         .form-container {
             max-width: 400px;
             margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         label {
             display: block;
             margin-bottom: 5px;
+            font-weight: bold;
         }
         input, textarea {
             width: 100%;
@@ -71,52 +95,76 @@
             margin-bottom: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
+            font-size: 14px;
+        }
+        button[type="submit"] {
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        /* Diseño Responsive */
+        @media (max-width: 768px) {
+            .product-image {
+                float: none;
+                margin-right: 0;
+                width: 100%;
+            }
+            .section-title {
+                font-size: 2rem;
+            }
         }
     </style>
 </head>
 <body>
     <nav>
         <ul>
-            <li><a href="#">Inicio</a></li>
-            <li><a href="#">Quiénes Somos</a></li>
-            <li><a href="#">Productos</a></li>
+            <li><a href="#inicio">Inicio</a></li>
+            <li><a href="#quienes-somos">Quiénes Somos</a></li>
+            <li><a href="#productos">Productos</a></li>
+            <li><a href="#contacto">Contacto</a></li>
         </ul>
     </nav>
-
     <section id="inicio">
         <div class="container">
             <h2 class="section-title">FINCA CASCALES - Aceite de Oliva Virgen Extra Ecológico</h2>
-            <img src="imagen-de-alta-calidad-1.jpg" alt="Aceite de Oliva Virgen Extra Ecológico">
+            <img src="https://via.placeholder.com/800x400?text=Aceite+de+Oliva" alt="Aceite de Oliva Virgen Extra Ecológico">
             <p>
-                Texto descriptivo sobre el aceite de oliva, sus beneficios y el proceso de producción ecológica.
+                Descubre el sabor auténtico de nuestro aceite de oliva virgen extra ecológico, producido con amor y cuidado en nuestra finca familiar.
             </p>
             <a href="#" class="cta-button">Comprar Aceite</a>
         </div>
     </section>
-
     <section id="quienes-somos">
         <div class="container">
             <h2 class="section-title">Quiénes Somos</h2>
-            <img src="imagen-de-alta-calidad-2.jpg" alt="Finca Cascales">
+            <img src="https://via.placeholder.com/800x400?text=Finca+Cascades" alt="Finca Cascales">
             <p>
-                Texto sobre la historia de la finca, su compromiso con la producción ecológica y sus valores.
+                En Finca Cascales, nos dedicamos a la producción de aceite de oliva de alta calidad desde hace generaciones. Nuestro compromiso con la ecología y la sostenibilidad es lo que nos distingue.
             </p>
         </div>
     </section>
-
     <section id="productos">
         <div class="container">
             <h2 class="section-title">Productos</h2>
             <div class="product">
-                <img src="imagen-de-alta-calidad-3.jpg" alt="Botella de Aceite de Oliva">
+                <img src="https://via.placeholder.com/250x250?text=Aceite+de+Oliva" alt="Botella de Aceite de Oliva">
                 <h3>Aceite de Oliva Virgen Extra Ecológico</h3>
                 <p>
-                    Descripción detallada del producto, incluyendo sus características, notas de sabor y recomendaciones de uso.
+                    Nuestro aceite de oliva virgen extra ecológico es un producto único, elaborado con aceitunas seleccionadas y procesadas con métodos tradicionales.
                 </p>
             </div>
         </div>
     </section>
-
     <section id="contacto">
         <div class="container">
             <h2 class="section-title">Contacto</h2>
@@ -124,21 +172,17 @@
                 <form action="#" method="post">
                     <label for="nombre">Nombre:</label>
                     <input type="text" id="nombre" name="nombre" required>
-
                     <label for="email">Email:</label>
                     <input type="email" id="email" name="email" required>
-
                     <label for="mensaje">Mensaje:</label>
                     <textarea id="mensaje" name="mensaje" required></textarea>
-
                     <button type="submit" class="cta-button">Enviar Mensaje</button>
                 </form>
             </div>
         </div>
     </section>
-
     <script>
         // JavaScript para funcionalidades interactivas (si es necesario)
     </script>
 </body>
-</html>
+                </html>

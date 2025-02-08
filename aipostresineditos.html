@@ -1,161 +1,35 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Generador de Postres Inéditos</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f8f8f8; /* Light background color */
-    }
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-    h1 {
-      color: #4a4a4a;
-      text-align: center;
-      font-size: 3em;
-      margin-bottom: 30px;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-    }
-    .image-container {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 20px;
-    }
-    img {
-      width: 48%;
-      max-width: 400px;
-      height: auto;
-      border-radius: 10px;
-      box-shadow: 2px 2px 5px rgba(0,0,0,0.2); /* Add a subtle shadow */
-    }
-    #ingredientSection {
-      margin-bottom: 20px; /* Space between ingredients and steps */
-    }
-    h2 {
-      color: #6a5acd;
-    }
-    ul {
-      color: #4a4a4a;
-      list-style-type: disc; /* Use bullet points */
-      padding-left: 20px; /* Indent the list */
-    }
-    #stepDetailCtn {
-      margin-top: 20px;
-      padding: 15px;
-      background-color: #f0f0f0;
-      border-radius: 5px;
-      display: none; /* Initially hidden */
-      box-shadow: 2px 2px 5px rgba(0,0,0,0.1); /* Add a subtle shadow */
-    }
-    button {
-      background-color: #6a5acd;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-top: 20px;
-      display: block;
-      width: 100%;
-      transition: background-color 0.3s ease; /* Smooth transition for hover effect */
-    }
-    button:hover {
-      background-color: #5760ab; /* Darker shade on hover */
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iframe Centrado</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden; /* Evita barras de desplazamiento */
+        }
+
+        .contenedor {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        iframe {
+            width: 80%; /* Ajusta el ancho del iframe */
+            height: 80%; /* Ajusta la altura del iframe */
+            border: none; /* Elimina el borde del iframe */
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h1 id="titleEl"></h1>
-
-    <div class="image-container">
-      <img id="dessertImg" src="https://placehold.co/400x300" alt="Dessert Image">
-      <img id="ingredientsImg" src="https://placehold.co/400x300" alt="Ingredients Image">
+    <div class="contenedor">
+        <iframe src="https://null.perchance.org/my-generator-name"></iframe>
     </div>
-
-    <div id="ingredientSection">
-      <h2>Ingredientes:</h2> <ul id="ingredientsList"></ul>
-    </div>
-
-    <div id="stepDetailCtn"></div>  </div>
-
-    <button id="generateBtn" onclick="generateNewDessert()">Generar Nuevo Postre</button>
-  </div>
-
-  <script>
-    // Placeholder functions - replace with your actual implementation
-    async function generateText(prompt) {
-      // Replace with your actual text generation logic (e.g., API call)
-      return new Promise(resolve => {
-        setTimeout(() => {
-          resolve(`Tarta de Manzana y Canela\nIngredientes:\nManzanas\nHarina\nHuevos\nAzúcar\nCanela\nMantequilla`); // Example recipe
-        }, 500); // Simulate a delay
-      });
-    }
-
-    async function generateImage(prompt) {
-      // Replace with your actual image generation logic (e.g., API call)
-      return new Promise(resolve => {
-        setTimeout(() => {
-          resolve("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxglj2+jAOPn+8+B7wAAAABJRU5ErkJggg=="); // Example image data URL
-        }, 500); // Simulate a delay
-      });
-    }
-    
-    let currentStep = 0;
-    let steps = [];
-    const titleEl = document.getElementById('titleEl');
-    const dessertImg = document.getElementById('dessertImg');
-    const ingredientsImg = document.getElementById('ingredientsImg');
-    const ingredientsList = document.getElementById('ingredientsList');
-    const generateBtn = document.getElementById('generateBtn');
-    const stepDetailCtn = document.getElementById('stepDetailCtn');
-
-    async function generateNewDessert() {
-      generateBtn.disabled = true;
-      generateBtn.textContent = "⏳ Generando...";
-
-      try {
-        let dessertRecipe = await generateText("Generate a pastry recipe in Spanish. Include a creative name and ingredients list.");
-        let recipeLines = dessertRecipe.split('\n');
-
-        titleEl.textContent = recipeLines[0];
-        titleEl.style.animation = "fadeIn 1s"; // Apply animation
-
-        let ingredients = recipeLines.slice(recipeLines.indexOf("Ingredientes:") + 1);
-        ingredientsList.innerHTML = ingredients.map(ing => `<li>${ing}</li>`).join('');
-
-        let dessertImagePromise = generateImage(`A delicious ${recipeLines[0]} dessert, styled food photography`);
-        let ingredientsImagePromise = generateImage(`Main ingredients for ${recipeLines[0]}: ${ingredients.slice(0, 3).join(', ')}`);
-
-        dessertImagePromise.then(dataUrl => dessertImg.src = dataUrl);
-        ingredientsImagePromise.then(dataUrl => ingredientsImg.src = dataUrl);
-
-        generateBtn.disabled = false;
-        generateBtn.textContent = "Generar Nuevo Postre";
-
-        currentStep = 0;
-        stepDetailCtn.style.display = "none";
-
-      } catch (error) {
-        console.error("Error generating dessert:", error);
-        generateBtn.textContent = "Error. Inténtalo de nuevo.";
-        generateBtn.disabled = false;
-      }
-    }
-
-    generateNewDessert();
-  </script>
 </body>
 </html>

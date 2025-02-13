@@ -1,0 +1,214 @@
+/* Reset de márgenes y padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+/* Sección Hero */
+#hero {
+    background: url('hero-image.jpg') no-repeat center center/cover;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    animation: fadeIn 2s ease-in-out;
+}
+
+.hero-content {
+    max-width: 600px;
+}
+
+.hero-content h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0;
+    animation: fadeIn 2s ease-in-out forwards;
+}
+
+.hero-content p {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeIn 2s ease-in-out 0.5s forwards;
+}
+
+/* Animaciones generales */
+.fade-in {
+    opacity: 0;
+    animation: fadeIn 2s ease-in-out forwards;
+}
+
+.delay-1 {
+    animation-delay: 0.5s;
+}
+
+.delay-2 {
+    animation-delay: 1s;
+}
+
+.delay-3 {
+    animation-delay: 1.5s;
+}
+
+.delay-4 {
+    animation-delay: 2s;
+}
+
+/* Animaciones específicas */
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+/* Efecto de deslizamiento */
+@keyframes slideIn {
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.slide-in {
+    animation: slideIn 1s ease-out forwards;
+}
+
+.slide-in.delay-1 {
+    animation-delay: 0.5s;
+}
+
+.slide-in.delay-2 {
+    animation-delay: 1s;
+}
+
+/* Sección de beneficios */
+#beneficios {
+    padding: 50px 20px;
+    text-align: center;
+    background-color: #ffffff;
+}
+
+#beneficios h2 {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+}
+
+.benefits {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+.benefit {
+    max-width: 250px;
+    opacity: 0;
+    animation: fadeIn 2s ease-in-out forwards;
+}
+
+.benefit h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.benefit p {
+    font-size: 1rem;
+    color: #777;
+}
+
+/* Testimonios */
+#testimonios {
+    background-color: #eeeeee;
+    padding: 50px 20px;
+    text-align: center;
+}
+
+#testimonios h2 {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+}
+
+.testimonials {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+.testimonial {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    animation: fadeIn 2s ease-in-out forwards;
+}
+
+.testimonial p {
+    font-style: italic;
+}
+
+/* Formulario */
+#formulario {
+    padding: 50px 20px;
+    background-color: #00bfae;
+    color: white;
+    text-align: center;
+}
+
+#formulario input {
+    margin: 10px 0;
+    padding: 15px;
+    width: 80%;
+    max-width: 400px;
+    border: none;
+    border-radius: 5px;
+}
+
+#formulario button {
+    padding: 15px 30px;
+    background-color: white;
+    color: #00bfae;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    transition: background-color 0.3s ease;
+}
+
+#formulario button:hover {
+    background-color: #009e8b;
+    cursor: pointer;
+}
+
+/* Botones de CTA */
+.cta-button {
+    padding: 15px 25px;
+    background-color: #00bfae;
+    color: white;
+    text-decoration: none;
+    font-size: 1.2rem;
+    border-radius: 5px;
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+.cta-button:hover {
+    transform: scale(1.1);
+}
+
+/* Footer */
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px;
+}

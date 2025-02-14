@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interfaz Bot Trading</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif; /* Fuente Roboto para un look moderno */
+            background-color: #0F172A; /* Fondo principal ligeramente más oscuro */
+            color: #E2E8F0; /* Texto más claro y legible */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased; /* Mejora el renderizado de fuentes en webkit */
+            -moz-osx-font-smoothing: grayscale; /* Mejora el renderizado de fuentes en Firefox */
+        }
+
+        .dashboard-container {
+            background-color: #1E293B; /* Fondo del panel más definido */
+            border-radius: 12px; /* Bordes más redondeados */
+            overflow: hidden;
+            width: 95%;
+            max-width: 1250px; /* Ancho máximo ligeramente aumentado */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6); /* Sombra más pronunciada */
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #334155; /* Borde sutil para definir el panel */
+        }
+
+        /* Header - Mejorado */
+        .dashboard-header {
+            background-color: #2D3748; /* Header más integrado con el panel */
+            padding: 25px 30px; /* Más padding */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #4A5568; /* Separador del header más visible */
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .header-logo img {
+            height: 35px; /* Logo un poco más grande */
+            margin-right: 15px;
+            filter: grayscale(20%); /* Ligero efecto grayscale para integrar mejor el logo */
+        }
+
+        .app-title {
+            font-size: 1.3em;
+            font-weight: 600; /* Peso de fuente semi-bold */
+            letter-spacing: 0.5px; /* Ligero espaciado entre letras */
+            color: #CBD5E0; /* Título más destacado */
+        }
+
+        .header-controls {
+            display: flex;
+            gap: 20px; /* Más espacio entre controles */
+        }
+
+        .control-box {
+            background-color: #475569; /* Cajas de control más oscuras */
+            color: #F3F4F6; /* Texto más claro en controles */
+            padding: 12px 18px; /* Padding aumentado */
+            border-radius: 6px; /* Bordes más redondeados */
+            font-size: 0.95em;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra interna sutil */
+        }
+
+        /* Main Content - Mejorado */
+        .dashboard-main {
+            display: flex;
+            padding: 30px; /* Más padding en el main */
+            gap: 30px; /* Más espacio entre secciones */
+        }
+
+        .main-section {
+            background-color: #2D3748; /* Sección principal más integrada */
+            padding: 25px; /* Padding aumentado */
+            border-radius: 10px; /* Bordes redondeados */
+            flex: 1;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3); /* Sombra suave para secciones */
+            border: 1px solid #4A5568; /* Borde sutil para secciones */
+        }
+
+        .main-section-left {
+            flex: 2;
+        }
+
+        .section-header {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 20px; /* Más margen inferior */
+            color: #CBD5E0; /* Header de sección más destacado */
+            text-transform: uppercase; /* Header en mayúsculas */
+            letter-spacing: 1px; /* Espaciado entre letras para header */
+        }
+
+        .chart-container, .chart-small-container, .circular-progress-container {
+            background-color: #374151; /* Fondo para gráficos más oscuro */
+            border-radius: 8px; /* Bordes redondeados */
+            height: 220px; /* Altura ligeramente aumentada */
+            margin-bottom: 25px; /* Más margen inferior */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #94A3B8; /* Placeholder de gráfico en color más suave */
+            font-style: italic;
+            border: 1px dashed #526075; /* Borde dashed sutil para placeholders */
+        }
+
+        .chart-small-container {
+            height: 120px; /* Altura para gráficos pequeños aumentada */
+        }
+
+        .circular-progress-container {
+            height: 270px; /* Altura para circular progress aumentada */
+        }
+
+
+        /* Estadísticas en cuadrícula - Mejorado */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); /* Columnas más anchas */
+            gap: 15px; /* Más espacio entre estadísticas */
+            margin-bottom: 25px; /* Más margen inferior */
+        }
+
+        .stat-box {
+            background-color: #374151; /* Cajas de estadísticas más integradas */
+            padding: 20px; /* Padding aumentado */
+            border-radius: 8px; /* Bordes más redondeados */
+            text-align: center;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.15); /* Sombra interna sutil */
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Transiciones suaves */
+        }
+
+        .stat-box:hover {
+            transform: scale(1.05); /* Ligeramente más grande al pasar el mouse */
+            box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.3); /* Sombra interna más pronunciada en hover */
+        }
+
+        .stat-value {
+            font-size: 1.7em; /* Valor estadístico más grande */
+            font-weight: 700; /* Valor estadístico en bold */
+            color: #F9FAFB; /* Valor más destacado */
+            margin-bottom: 5px; /* Margen inferior */
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            color: #A3A9B3; /* Label más sutil */
+            text-transform: uppercase; /* Label en mayúsculas */
+            letter-spacing: 0.8px; /* Espaciado entre letras para label */
+        }
+
+        /* Estadísticas inferiores - Mejorado */
+        .bottom-stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px; /* Más espacio entre bloques de estadísticas inferiores */
+            justify-content: flex-start; /* Alineación a la izquierda */
+        }
+
+        .stat-block {
+            background-color: #374151; /* Bloques de estadísticas inferiores más integrados */
+            padding: 10px 15px; /* Padding aumentado */
+            border-radius: 5px; /* Bordes redondeados */
+            font-size: 0.9em;
+            text-align: center;
+            min-width: 70px; /* Ancho mínimo aumentado */
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1); /* Sombra interna sutil */
+            transition: background-color 0.2s ease-in-out; /* Transición de color suave */
+        }
+
+        .stat-block:hover {
+            background-color: #4A5568; /* Ligeramente más oscuro en hover */
+        }
+
+        .stat-block-percentage {
+            background-color: #4A5568; /* Color ligeramente diferente para porcentaje, más oscuro */
+        }
+
+        .stat-block .stat-value {
+            font-size: 1.2em; /* Valor ligeramente más grande */
+            margin-bottom: 3px; /* Margen inferior */
+            color: #F9FAFB; /* Valor más destacado */
+        }
+
+        .stat-block .stat-label {
+            font-size: 0.75em;
+            color: #A3A9B3; /* Label más sutil */
+            text-transform: uppercase; /* Label en mayúsculas */
+            letter-spacing: 0.5px; /* Espaciado entre letras para label */
+        }
+
+
+        /* Cajas de datos a la derecha - Mejorado */
+        .data-boxes-container {
+            display: flex;
+            gap: 25px; /* Más espacio entre cajas de datos */
+            justify-content: center;
+            margin-bottom: 25px; /* Más margen inferior */
+        }
+
+        .data-box {
+            background-color: #374151; /* Cajas de datos más integradas */
+            padding: 25px 30px; /* Padding aumentado */
+            border-radius: 10px; /* Bordes más redondeados */
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Sombra más pronunciada */
+            border: 1px solid #4A5568; /* Borde sutil para cajas de datos */
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Transiciones suaves */
+        }
+
+        .data-box:hover {
+            transform: scale(1.03); /* Ligeramente más grande al pasar el mouse */
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4); /* Sombra más pronunciada en hover */
+        }
+
+        .data-label {
+            font-size: 1em;
+            color: #A3A9B3; /* Label más sutil */
+            margin-bottom: 8px; /* Margen inferior */
+            text-transform: uppercase; /* Label en mayúsculas */
+            letter-spacing: 1px; /* Espaciado entre letras para label */
+        }
+
+        .data-value {
+            font-size: 2.5em; /* Valor de datos más grande */
+            font-weight: 800; /* Valor de datos en extra-bold */
+            color: #F9FAFB; /* Valor más destacado */
+            letter-spacing: -1px; /* Espaciado negativo entre letras para valores grandes */
+            line-height: 1; /* Ajuste de line-height */
+        }
+
+        /* Contenedor de gráficos inferiores - Mejorado */
+        .lower-charts-container {
+            display: flex;
+            gap: 25px; /* Más espacio entre gráficos inferiores */
+        }
+
+        .lower-chart-box {
+            background-color: #2D3748; /* Cajas de gráficos inferiores más integradas */
+            padding: 20px; /* Padding aumentado */
+            border-radius: 10px; /* Bordes más redondeados */
+            flex: 1;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); /* Sombra suave para gráficos inferiores */
+            border: 1px solid #4A5568; /* Borde sutil para gráficos inferiores */
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Transiciones suaves */
+        }
+
+        .lower-chart-box:hover {
+            transform: scale(1.02); /* Ligeramente más grande al pasar el mouse */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Sombra más pronunciada en hover */
+        }
+
+        .chart-header {
+            font-size: 1.1em;
+            font-weight: 600; /* Header de gráfico en semi-bold */
+            margin-bottom: 12px; /* Margen inferior */
+            text-align: center;
+            color: #CBD5E0; /* Header de gráfico más destacado */
+            text-transform: uppercase; /* Header en mayúsculas */
+            letter-spacing: 0.8px; /* Espaciado entre letras para header de gráfico */
+        }
+
+        .chart-footer {
+            font-size: 0.85em;
+            text-align: center;
+            color: #A3A9B3; /* Footer de gráfico más sutil */
+            margin-top: 12px; /* Margen superior */
+            text-transform: uppercase; /* Footer en mayúsculas */
+            letter-spacing: 0.5px; /* Espaciado entre letras para footer de gráfico */
+        }
+
+
+        /* Footer (ejemplo, si lo necesitas) - Mejorado */
+        .dashboard-footer {
+            background-color: #2D3748; /* Footer más integrado */
+            padding: 15px; /* Padding aumentado */
+            text-align: center;
+            color: #A3A9B3; /* Texto del footer más sutil */
+            border-top: 1px solid #4A5568; /* Línea separadora más visible */
+            font-size: 0.9em;
+        }
+
+        /* Media Queries para Responsive Design - Mejorado */
+        @media (max-width: 768px) {
+            .dashboard-main {
+                flex-direction: column;
+                padding: 20px; /* Padding reducido en pantallas pequeñas */
+                gap: 20px; /* Espacio reducido entre secciones */
+            }
+
+            .main-section, .lower-chart-box, .data-box {
+                padding: 20px; /* Padding reducido en secciones en pantallas pequeñas */
+                margin-bottom: 15px; /* Margen inferior para separar secciones apiladas */
+            }
+
+            .main-section-left, .main-section-right {
+                flex: 1;
+            }
+
+            .header-controls {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px; /* Espacio reducido entre controles apilados */
+            }
+
+            .control-box {
+                margin-bottom: 0; /* Sin margen inferior para controles apilados */
+            }
+
+            .data-boxes-container {
+                flex-direction: column;
+                align-items: center;
+                gap: 15px; /* Espacio reducido entre cajas de datos apiladas */
+            }
+
+            .lower-charts-container {
+                flex-direction: column;
+                gap: 15px; /* Espacio reducido entre gráficos inferiores apilados */
+            }
+
+            .stat-grid {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Estadísticas más anchas en pantallas pequeñas */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <div class="header-logo">
+                <img src="images/logo.png" alt="Logo Bot Trading"> <span class="app-title">CRISYKPOINTINTDS</span>
+            </div>
+            <div class="header-controls">
+                <div class="control-box">1DO C20 150GK</div>
+                <div class="control-box">SAEMG 65 SOUT ES</div>
+                <div class="control-box">644 2732%</div>
+            </div>
+        </header>
+
+        <main class="dashboard-main">
+            <section class="main-section main-section-left">
+                <div class="section-header">3 KH800</div>
+                <div class="chart-container">
+                    [attachment_0](attachment)
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <div class="stat-value stat-value-precio">--</div>
+                        <div class="stat-label">Precio</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value stat-value-volumen">--</div>
+                        <div class="stat-label">Volumen</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">326</div>
+                        <div class="stat-label">Label 3</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">26</div>
+                        <div class="stat-label">Label 4</div>
+                    </div>
+                </div>
+                <div class="bottom-stats">
+                    <div class="stat-block">
+                        <div class="stat-value">2002</div>
+                        <div class="stat-label">Label 5</div>
+                    </div>
+                    <div class="stat-block">
+                        <div class="stat-value">3555</div>
+                        <div class="stat-label">Label 6</div>
+                    </div>
+                    <div class="stat-block">
+                        <div class="stat-value">9365</div>
+                        <div class="stat-label">Label 7</div>
+                    </div>
+                    <div class="stat-block stat-block-percentage">
+                        <div class="stat-value">525%</div>
+                        <div class="stat-label">Label 8</div>
+                    </div>
+                    <div class="stat-block">
+                        <div class="stat-value">505</div>
+                        <div class="stat-label">Label 9</div>
+                    </div>
+                    <div class="stat-block">
+                        <div class="stat-value">+ 5685</div>
+                        <div class="stat-label">Label 10</div>
+                    </div>
+                    <div class="stat-block">
+                        <div class="stat-value">59019</div>
+                        <div class="stat-label">Label 11</div>
+                    </div>
+                    <div class="stat-block">
+                        <div class="stat-value">3502</div>
+                        <div class="stat-label">Label 12</div>
+                    </div>
+                    <div class="stat-block">
+                        <div class="stat-value">2503</div>
+                        <div class="stat-label">Label 13</div>
+                    </div>
+                    <div class="stat-block">
+                        <div class="stat-value">2102</div>
+                        <div class="stat-label">Label 14</div>
+                    </div>
+                    <div class="stat-block">
+                        <div class="stat-value">9.338</div>
+                        <div class="stat-label">Label 15</div>
+                    </div>
+                    <div class="stat-block">
+                        <div class="stat-value">70.05</div>
+                        <div class="stat-label">Label 16</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="main-section main-section-right">
+                <div class="section-header">LOWERITCIM EAIES</div>
+                <div class="circular-progress-container">
+                    [attachment_1](attachment)
+                </div>
+                <div class="data-boxes-container">
+                    <div class="data-box">
+                        <div class="data-label">LABEL 17</div>
+                        <div class="data-value">2325</div>
+                    </div>
+                    <div class="data-box">
+                        <div class="data-label">LABEL 18</div>
+                        <div class="data-value">02,06</div>
+                    </div>
+                </div>
+                <div class="lower-charts-container">
+                    <div class="lower-chart-box">
+                        <div class="chart-header">SKERS</div>
+                        <div class="chart-small-container">
+                            [attachment_2](attachment)
+                        </div>
+                        <div class="chart-footer">135.03.200</div>
+                    </div>
+                    <div class="lower-chart-box">
+                        <div class="chart-header">FIBEARERT</div>
+                        <div class="chart-small-container">
+                            [attachment_3](attachment)
+                        </div>
+                        <div class="chart-footer">135 RB 228</div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <footer class="dashboard-footer">
+            </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Interfaz de Bot Trading inicializada.');
+
+            // Función para actualizar los datos de mercado en la interfaz
+            function actualizarDatosMercado() {
+                fetch('/api/mercado') // Consulta al endpoint de Flask
+                    .then(response => response.json()) // Convierte la respuesta a JSON
+                    .then(data => {
+                        // Actualiza elementos de la interfaz con los datos recibidos
+                        document.querySelector('.stat-value-precio').textContent = data.precio;
+                        document.querySelector('.stat-value-volumen').textContent = data.volumen;
+                        // Puedes actualizar otros elementos aquí (gráficos, etc.)
+                        console.log('Datos de mercado actualizados:', data);
+                    })
+                    .catch(error => {
+                        console.error('Error al obtener datos del mercado:', error);
+                    });
+            }
+
+            // Actualizar datos de mercado cada cierto tiempo (ejemplo: cada 3 segundos)
+            setInterval(actualizarDatosMercado, 3000); // 3000 ms = 3 segundos
+
+            // Llamar a actualizarDatosMercado() una vez al inicio para mostrar datos iniciales
+            actualizarDatosMercado();
+        });
+    </script>
+</body>
+</html>

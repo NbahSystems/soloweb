@@ -10,12 +10,10 @@
             border: 1px solid #ccc;
         }
 
-        #estado {
-            margin-bottom: 10px;
-        }
-
-        #balance {
+        #seccion1, #seccion2 {
             margin-bottom: 20px;
+            border: 1px solid #ccc; /* Bordes para separar las secciones */
+            padding: 10px; /* Espacio interno para las secciones */
         }
 
         #lista-operaciones {
@@ -31,12 +29,23 @@
 <body>
     <div id="contenedor">
         <h1>Bot de Trading BTCUSDT</h1>
-        <div id="estado">
-            <h2>Estado: <span id="estado-bot">Inactivo</span></h2>
+
+        <div id="seccion1">
+            <h2>Estadísticas</h2>
+            <p>Total de Operaciones: <span id="total-operaciones">0</span></p>
+            <p>Operaciones Ganadoras: <span id="operaciones-ganadoras">0</span></p>
+            <p>Winrate: <span id="winrate">0.00%</span></p>
+            <p>Profit Total: <span id="profit-total">0.00</span> USDT</p>
+            <p>Capital Actual: <span id="capital-actual">0.00</span> USDT</p>
         </div>
-        <div id="balance">
-            <h2>Balance: <span id="balance-btc">0.00</span> BTC / <span id="balance-usdt">0.00</span> USDT</h2>
+
+        <div id="seccion2">
+            <h2>Última Operación</h2>
+            <p>Fecha y Hora: <span id="fecha-hora">--/--/-- --:--:--</span></p>
+            <p>Posición: <span id="posicion">N/A</span></p>
+            <p>Precio de Entrada: <span id="precio-entrada">0.00</span> USDT</p>
         </div>
+
         <div id="operaciones">
             <h2>Últimas Operaciones:</h2>
             <ul id="lista-operaciones">
@@ -46,25 +55,33 @@
 
     <script>
         // Datos de ejemplo (reemplaza con datos reales de tu bot)
+        let totalOperaciones = 10;
+        let operacionesGanadoras = 7;
         const operaciones = [
-            { tipo: "compra", precio: 29000, cantidad: 0.01 },
-            { tipo: "venta", precio: 29500, cantidad: 0.005 },
+            { fecha: "2024-05-02 10:00:00", tipo: "compra", precio: 29000, cantidad: 0.01 },
+            { fecha: "2024-05-02 10:05:00", tipo: "venta", precio: 29500, cantidad: 0.005 },
             // ... más operaciones
         ];
 
         // Función para actualizar la interfaz con datos del bot
         function actualizarInterfaz() {
-            // Estado del bot (ejemplo)
-            const estadoBot = "Activo"; // Reemplaza con el estado real
-            document.getElementById("estado-bot").textContent = estadoBot;
+            // Sección 1: Estadísticas
+            document.getElementById("total-operaciones").textContent = totalOperaciones;
+            document.getElementById("operaciones-ganadoras").textContent = operacionesGanadoras;
+            const winrate = totalOperaciones > 0 ? (operacionesGanadoras / totalOperaciones) * 100 : 0;
+            document.getElementById("winrate").textContent = winrate.toFixed(2) + "%";
+            document.getElementById("profit-total").textContent = 1500; // Reemplaza con el profit real
+            document.getElementById("capital-actual").textContent = 10000; // Reemplaza con el capital real
 
-            // Balance (ejemplo)
-            const balanceBTC = 0.123; // Reemplaza con el balance real
-            const balanceUSDT = 1000; // Reemplaza con el balance real
-            document.getElementById("balance-btc").textContent = balanceBTC.toFixed(2);
-            document.getElementById("balance-usdt").textContent = balanceUSDT.toFixed(2);
+            // Sección 2: Última Operación
+            if (operaciones.length > 0) {
+                const ultimaOperacion = operaciones[operaciones.length - 1];
+                document.getElementById("fecha-hora").textContent = ultimaOperacion.fecha;
+                document.getElementById("posicion").textContent = ultimaOperacion.tipo === "compra" ? "Long" : "Short";
+                document.getElementById("precio-entrada").textContent = ultimaOperacion.precio.toFixed(2);
+            }
 
-            // Lista de operaciones
+            // Lista de operaciones (sin cambios)
             const listaOperaciones = document.getElementById("lista-operaciones");
             listaOperaciones.innerHTML = ""; // Limpiar la lista
             operaciones.forEach(operacion => {

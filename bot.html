@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bot de Trading BTCUSDT</title>
+    <style>
+        #contenedor {
+            font-family: sans-serif;
+            margin: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+        }
+
+        #estado {
+            margin-bottom: 10px;
+        }
+
+        #balance {
+            margin-bottom: 20px;
+        }
+
+        #lista-operaciones {
+            list-style: none;
+            padding: 0;
+        }
+
+        #lista-operaciones li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="contenedor">
+        <h1>Bot de Trading BTCUSDT</h1>
+        <div id="estado">
+            <h2>Estado: <span id="estado-bot">Inactivo</span></h2>
+        </div>
+        <div id="balance">
+            <h2>Balance: <span id="balance-btc">0.00</span> BTC / <span id="balance-usdt">0.00</span> USDT</h2>
+        </div>
+        <div id="operaciones">
+            <h2>Últimas Operaciones:</h2>
+            <ul id="lista-operaciones">
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Datos de ejemplo (reemplaza con datos reales de tu bot)
+        const operaciones = [
+            { tipo: "compra", precio: 29000, cantidad: 0.01 },
+            { tipo: "venta", precio: 29500, cantidad: 0.005 },
+            // ... más operaciones
+        ];
+
+        // Función para actualizar la interfaz con datos del bot
+        function actualizarInterfaz() {
+            // Estado del bot (ejemplo)
+            const estadoBot = "Activo"; // Reemplaza con el estado real
+            document.getElementById("estado-bot").textContent = estadoBot;
+
+            // Balance (ejemplo)
+            const balanceBTC = 0.123; // Reemplaza con el balance real
+            const balanceUSDT = 1000; // Reemplaza con el balance real
+            document.getElementById("balance-btc").textContent = balanceBTC.toFixed(2);
+            document.getElementById("balance-usdt").textContent = balanceUSDT.toFixed(2);
+
+            // Lista de operaciones
+            const listaOperaciones = document.getElementById("lista-operaciones");
+            listaOperaciones.innerHTML = ""; // Limpiar la lista
+            operaciones.forEach(operacion => {
+                const li = document.createElement("li");
+                li.textContent = `${operacion.tipo} ${operacion.cantidad} BTC @ ${operacion.precio}`;
+                listaOperaciones.appendChild(li);
+            });
+        }
+
+        // Llamar a la función para actualizar la interfaz (simula la actualización periódica)
+        actualizarInterfaz();
+        setInterval(actualizarInterfaz, 5000); // Actualizar cada 5 segundos
+    </script>
+</body>
+</html>
